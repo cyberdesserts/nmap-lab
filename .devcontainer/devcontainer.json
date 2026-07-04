@@ -23,30 +23,19 @@
 
     "customizations": {
         "vscode": {
-            "extensions": [],
-            // Open the README (rendered) automatically when the Codespace opens, so a
-            // newcomer lands on instructions instead of an empty editor. The README
-            // points them straight to walkthrough/README.md.
-            "settings": {
-                "workbench.startupEditor": "readme"
-            }
+            "extensions": []
         }
     },
 
-    // Two things orient a newcomer:
-    //
-    // 1) The getting-started greeting is wired into ~/.bashrc so it shows in your
-    //    terminal (postCreateCommand output only reaches the creation log). We guard
-    //    on TERM_PROGRAM=vscode so it fires in a real VS Code terminal but NOT during
-    //    the dev container's login-shell env probe -- that probe sources ~/.bashrc
-    //    during setup and would otherwise consume the once-only flag before you ever
-    //    see the greeting.
+    // Greet the reader and open the walkthrough. postCreateCommand output only reaches
+    // the Codespace creation log, never the terminal, so the greeting is wired into
+    // ~/.bashrc: it guards on TERM_PROGRAM=vscode so it fires in a real VS Code terminal
+    // but NOT during the dev container's login-shell env probe (which sources ~/.bashrc
+    // during setup and would otherwise consume the once-only flag before the reader sees
+    // it), and it runs once per codespace. welcome.sh prints the greeting AND opens
+    // walkthrough/README.md via the `code` CLI -- reliable because it runs inside the
+    // VS Code terminal session, which postAttachCommand's context cannot reach.
     "postCreateCommand": "chmod +x .devcontainer/welcome.sh && grep -q nmaplab-welcome ~/.bashrc 2>/dev/null || printf '\\n# nmaplab-welcome: greet once in a real VS Code terminal (not the env probe)\\nif [ \"$TERM_PROGRAM\" = vscode ] && [ ! -f ~/.nmaplab_welcomed ]; then touch ~/.nmaplab_welcomed; bash /workspaces/nmap-lab/.devcontainer/welcome.sh; fi\\n' >> ~/.bashrc",
-
-    // 2) Open the walkthrough for the reader on attach. This is deterministic (it does
-    //    not depend on startupEditor, which a user's synced settings can override), so
-    //    you land on the instructions instead of an empty editor.
-    "postAttachCommand": "code /workspaces/nmap-lab/walkthrough/README.md",
 
     // Run as the non-root analyst user. Note: unprivileged scans default to TCP
     // connect (-sT) rather than SYN (-sS). That is intentional and is taught in

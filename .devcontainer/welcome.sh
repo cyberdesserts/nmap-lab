@@ -1,7 +1,7 @@
 #!/bin/bash
-# Runs once when the Codespace is created. Confirms the toolkit is present and
-# points the reader at their first step. Kept deliberately simple: a friendly
-# "you're ready" so someone new to all this knows nothing is broken.
+# Runs once in your first terminal when the Codespace opens (wired via ~/.bashrc).
+# Confirms the toolkit is present, points the reader at their first step, and opens
+# the walkthrough. Kept deliberately simple: a friendly "you're ready".
 
 echo ""
 echo "=================================================="
@@ -27,7 +27,7 @@ echo "  The four target hosts are running alongside this workspace."
 echo "  You reach them by name: leaky-web, legacy-api, login-portal, multi-service"
 echo ""
 echo "  Your first step:"
-echo "     1. Open  walkthrough/README.md"
+echo "     1. Read the walkthrough (it is opening for you now)"
 echo "     2. Start with Target 1 (leaky-web)"
 echo "     3. Try your first scan:   nmap leaky-web"
 echo ""
@@ -36,3 +36,11 @@ echo "  and delete it when you are done. The README explains why both matter."
 echo ""
 echo "=================================================="
 echo ""
+
+# Open the walkthrough for the reader. This runs inside the VS Code terminal
+# session, so the `code` CLI can reach the editor (postAttachCommand cannot do
+# this reliably). Best-effort and guarded, so running welcome.sh elsewhere is
+# harmless.
+if command -v code >/dev/null 2>&1; then
+    code /workspaces/nmap-lab/walkthrough/README.md >/dev/null 2>&1 || true
+fi
