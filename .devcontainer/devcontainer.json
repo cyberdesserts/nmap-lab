@@ -33,12 +33,20 @@
         }
     },
 
-    // Wire the getting-started greeting into the interactive shell so the reader
-    // actually SEES it. postCreateCommand output only lands in the creation log, not
-    // the terminal you open afterwards, so instead we run welcome.sh once from
-    // ~/.bashrc: the first terminal you open shows it, and a flag file stops it
-    // repeating in later terminals.
-    "postCreateCommand": "chmod +x .devcontainer/welcome.sh && grep -q nmaplab-welcome ~/.bashrc 2>/dev/null || printf '\\n# nmaplab-welcome: show the getting-started greeting once per codespace\\nif [ ! -f ~/.nmaplab_welcomed ]; then touch ~/.nmaplab_welcomed; bash /workspaces/nmap-lab/.devcontainer/welcome.sh; fi\\n' >> ~/.bashrc",
+    // Two things orient a newcomer:
+    //
+    // 1) The getting-started greeting is wired into ~/.bashrc so it shows in your
+    //    terminal (postCreateCommand output only reaches the creation log). We guard
+    //    on TERM_PROGRAM=vscode so it fires in a real VS Code terminal but NOT during
+    //    the dev container's login-shell env probe -- that probe sources ~/.bashrc
+    //    during setup and would otherwise consume the once-only flag before you ever
+    //    see the greeting.
+    "postCreateCommand": "chmod +x .devcontainer/welcome.sh && grep -q nmaplab-welcome ~/.bashrc 2>/dev/null || printf '\\n# nmaplab-welcome: greet once in a real VS Code terminal (not the env probe)\\nif [ \"$TERM_PROGRAM\" = vscode ] && [ ! -f ~/.nmaplab_welcomed ]; then touch ~/.nmaplab_welcomed; bash /workspaces/nmap-lab/.devcontainer/welcome.sh; fi\\n' >> ~/.bashrc",
+
+    // 2) Open the walkthrough for the reader on attach. This is deterministic (it does
+    //    not depend on startupEditor, which a user's synced settings can override), so
+    //    you land on the instructions instead of an empty editor.
+    "postAttachCommand": "code /workspaces/nmap-lab/walkthrough/README.md",
 
     // Run as the non-root analyst user. Note: unprivileged scans default to TCP
     // connect (-sT) rather than SYN (-sS). That is intentional and is taught in

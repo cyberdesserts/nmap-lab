@@ -46,8 +46,10 @@ screen. Press the green **Create codespace** button there and you are done.
 **What happens next, either way:** GitHub builds your own private copy of the lab
 in the browser, which takes a couple of minutes the first time.
 
-When it is ready, a full code editor opens in your browser. A welcome message
-appears in the terminal at the bottom, telling you exactly what to do first.
+When it is ready, a full code editor opens in your browser. The **walkthrough
+opens automatically** so you know where to begin, and a short **welcome message**
+appears in the terminal at the bottom, confirming the tools are installed and
+pointing you to your first scan.
 
 You never touch git, and you never install anything. The environment runs on
 GitHub's computers, not yours. When you are finished you stop it, and delete it
@@ -117,7 +119,9 @@ Launching is covered in the Quick Start above. Once your Codespace opens, the
 four target hosts are already running alongside your workspace, reachable by
 name: `leaky-web`, `legacy-api`, `login-portal`, and `multi-service`.
 
-Open `walkthrough/README.md` and start with the first target.
+The **walkthrough opens automatically** when your Codespace loads — start with
+**Target 1**. If you closed the tab, reopen `walkthrough/README.md` from the file
+explorer on the left.
 
 You do not need root. The workspace runs as a normal user, which is the
 realistic default and shapes how some scans behave. The walkthrough explains
@@ -196,9 +200,8 @@ requires.
 
 **Save it before you delete.** Your Codespace is disposable, and deleting it
 deletes `findings.md` along with it. Before you tear it down, keep your work: in
-the file explorer, right-click `findings.md` and choose **Download** (the simplest
-option), or copy its contents somewhere safe. If you are comfortable with git, you
-can instead fork this repo and push your findings to your own copy.
+the file explorer, right-click `findings.md` and choose **Download**, or copy its
+contents somewhere safe.
 
 ---
 
