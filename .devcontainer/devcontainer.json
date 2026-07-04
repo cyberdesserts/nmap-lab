@@ -1,0 +1,37 @@
+{
+    "name": "nmap-lab",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "workspace",
+    "workspaceFolder": "/workspaces/nmap-lab",
+
+    // Pin the smallest (2-core) machine. On the free tier this matters: compute
+    // is billed in core-hours (cores x runtime), and the 120 core-hour monthly
+    // allowance is 60 real hours on a 2-core box but only 30 on a 4-core one.
+    // This lab does not need more than 2 cores. Requesting the smallest machine
+    // here doubles the reader's effective free runtime.
+    "hostRequirements": {
+        "cpus": 2,
+        "memory": "4gb",
+        "storage": "32gb"
+    },
+
+    // The targets come up alongside the workspace via docker-compose. You reach
+    // them by hostname (leaky-web, legacy-api, login-portal, multi-service) on
+    // the internal labnet network. Nothing is forwarded to your local machine,
+    // because the whole point is to scan inside the sealed lab network.
+    "forwardPorts": [],
+
+    "customizations": {
+        "vscode": {
+            "extensions": []
+        }
+    },
+
+    // Confirm the toolkit is present and greet the reader with their first step.
+    "postCreateCommand": "chmod +x .devcontainer/welcome.sh && .devcontainer/welcome.sh",
+
+    // Run as the non-root analyst user. Note: unprivileged scans default to TCP
+    // connect (-sT) rather than SYN (-sS). That is intentional and is taught in
+    // the walkthrough.
+    "remoteUser": "analyst"
+}

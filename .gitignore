@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor / OS cruft
+*.swp
+*.swo
+*~
+Thumbs.db
+
+# Scan output — readers generate their own during the lab
+*.nmap
+*.gnmap
+*.xml
+scans/

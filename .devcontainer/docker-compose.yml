@@ -1,0 +1,67 @@
+# nmap-lab environment
+#
+# One workspace container (where you run nmap and curl) plus four target
+# containers to scan. Every target sits on an internal Docker network named
+# labnet. Nothing here is published to the host or the internet. The targets
+# are reachable only from inside this Codespace, by hostname, and they vanish
+# when you tear the Codespace down.
+#
+# You are scanning your own throwaway lab. That is the whole point, and it is
+# the only context in which the exercises in this repo are appropriate.
+
+services:
+  workspace:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspaces/nmap-lab:cached
+    command: sleep infinity
+    networks:
+      - labnet
+    # No ports published. You work from inside this container's terminal.
+
+  # Scenario 1 : a web host that gives away more than it should.
+  # Teaches: full port-range scanning, reading HTTP response headers,
+  # spotting an information-disclosure problem on your own estate.
+  leaky-web:
+    build:
+      context: ../targets/leaky-web
+    networks:
+      - labnet
+    # Deliberately exposes a second service on a non-default high port so a
+    # default scan misses it. No host port mapping.
+
+  # Scenario 2 : an API running an older, pinned server version.
+  # Teaches: service/version detection (-sV), and how to document an outdated
+  # component honestly without asserting a specific CVE you have not verified.
+  legacy-api:
+    build:
+      context: ../targets/legacy-api
+    networks:
+      - labnet
+
+  # Scenario 3 : a host serving a recognisable login portal.
+  # Teaches: identifying what an application *is* by fetching content, not just
+  # noting that a port is open.
+  login-portal:
+    build:
+      context: ../targets/login-portal
+    networks:
+      - labnet
+
+  # Scenario 4 : a host exposing several services at once.
+  # Teaches: synthesising many ports into one coherent picture of a host,
+  # which is what the findings report is written about.
+  multi-service:
+    build:
+      context: ../targets/multi-service
+    networks:
+      - labnet
+
+networks:
+  labnet:
+    driver: bridge
+    internal: true
+    # internal: true means this network has no route to the outside world.
+    # The targets cannot reach the internet and the internet cannot reach them.
