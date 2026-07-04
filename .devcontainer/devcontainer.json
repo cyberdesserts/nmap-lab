@@ -23,12 +23,22 @@
 
     "customizations": {
         "vscode": {
-            "extensions": []
+            "extensions": [],
+            // Open the README (rendered) automatically when the Codespace opens, so a
+            // newcomer lands on instructions instead of an empty editor. The README
+            // points them straight to walkthrough/README.md.
+            "settings": {
+                "workbench.startupEditor": "readme"
+            }
         }
     },
 
-    // Confirm the toolkit is present and greet the reader with their first step.
-    "postCreateCommand": "chmod +x .devcontainer/welcome.sh && .devcontainer/welcome.sh",
+    // Wire the getting-started greeting into the interactive shell so the reader
+    // actually SEES it. postCreateCommand output only lands in the creation log, not
+    // the terminal you open afterwards, so instead we run welcome.sh once from
+    // ~/.bashrc: the first terminal you open shows it, and a flag file stops it
+    // repeating in later terminals.
+    "postCreateCommand": "chmod +x .devcontainer/welcome.sh && grep -q nmaplab-welcome ~/.bashrc 2>/dev/null || printf '\\n# nmaplab-welcome: show the getting-started greeting once per codespace\\nif [ ! -f ~/.nmaplab_welcomed ]; then touch ~/.nmaplab_welcomed; bash /workspaces/nmap-lab/.devcontainer/welcome.sh; fi\\n' >> ~/.bashrc",
 
     // Run as the non-root analyst user. Note: unprivileged scans default to TCP
     // connect (-sT) rather than SYN (-sS). That is intentional and is taught in

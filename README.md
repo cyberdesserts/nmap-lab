@@ -5,6 +5,14 @@
 Click the badge above to launch the lab in your browser. You need a free GitHub
 account and one click, with nothing to install or configure.
 
+> **▶ Where to start:** when your Codespace opens, open **`walkthrough/README.md`**
+> and begin with **Target 1** — your first command is `nmap leaky-web`.
+>
+> **💸 Free to run:** personal GitHub accounts include **120 Codespaces core‑hours a
+> month, free**. This lab pins the smallest **2‑core** machine, so that is about
+> **60 hours every month** — and the whole lab takes roughly one. You are not charged
+> to run it; see [Staying within the free tier](#staying-within-the-free-tier) below.
+
 If you have not used Codespaces before, the Quick Start below walks through it.
 
 A hands-on lab for learning to profile a server with nmap, the way it actually
@@ -142,6 +150,15 @@ delete it.
 When you have finished the lab and saved your `findings.md` (see **What you walk
 away with** below), delete the Codespace at https://github.com/codespaces. Stop
 and delete are two separate actions, and you want both.
+
+**About GitHub's "paid for by…" message.** When you create the Codespace, GitHub
+shows a line like *"Codespace usage for this repository is paid for by [your
+username]."* That is a billing‑attribution notice, **not a charge**. It means the
+Codespace runs on **your own** account's monthly allowance — the 120 free
+core‑hours and 15 GB‑months of storage above. This lab is small and short‑lived, so
+a normal run stays comfortably free, and personal accounts default to a **$0
+spending limit**, so if you ever ran out of the allowance Codespaces simply stops
+rather than billing you.
 
 None of this is required to complete the lab. It is here because managing cloud
 compute cost is itself a real skill, and because nobody enjoys an unexpected
